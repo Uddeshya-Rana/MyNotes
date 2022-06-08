@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "60919244570",
+    "project_id": "mynotes-uddeshya",
+    "storage_bucket": "mynotes-uddeshya.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60919244570:android:8fc2644b9fa19da9a0aea3",
+        "android_client_info": {
+          "package_name": "com.example.mynotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "60919244570-bnsnheitn0593uiav10csss8982s24sf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvjSOm1cjJRNTBzFQC_BigPZTCdr0pMf8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "60919244570-bnsnheitn0593uiav10csss8982s24sf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
