@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as developer;
+
+import 'package:mynotes/constants/routes.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -62,18 +65,19 @@ class _RegisterViewState extends State<RegisterView> {
                             email: email,
                             password: password
                         );
-                        print(userCredential);
+                        developer.log(userCredential.toString());
                       }on FirebaseAuthException catch(e){ //catches on the firebase auth type of exceptions
-                        if(e.code=='weak-password')
-                          print('password is too short');
-                        else if(e.code=='email-already-in-use')
-                          print('this email is already registred');
-                        else if(e.code=='invalid-email')
-                          print('Please enter a valid email address');
+                        if(e.code=='weak-password') {
+                          developer.log('password is too short');
+                        } else if(e.code=='email-already-in-use') {
+                          developer.log('this email is already registered');
+                        } else if(e.code=='invalid-email') {
+                          developer.log('Please enter a valid email address');
+                        }
                       }
                       catch(e){ //catches every other type of error
-                        print(e);
-                        print(e.runtimeType);
+                        developer.log(e.toString());
+                        developer.log(e.runtimeType.toString());
                       }
 
 
@@ -83,7 +87,7 @@ class _RegisterViewState extends State<RegisterView> {
                   TextButton(
                       onPressed: (){
                         Navigator.of(context).pushNamedAndRemoveUntil(
-                          '/login',
+                          loginRoute,
                           (route) => false
                         );
                       },

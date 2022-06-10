@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as developer;
 
+import 'package:mynotes/constants/routes.dart';
 
 
 class LoginView extends StatefulWidget{
@@ -64,18 +66,20 @@ class _LoginViewState extends State<LoginView> {
                                     email: email,
                                     password: password
                                     );
-                                print(userCredential);
+                                Navigator.of(context).pushNamedAndRemoveUntil(notesRoute, (route) => false);
+
                              }on FirebaseAuthException catch(e){ //catches on the firebase auth type of exceptions
-                            if(e.code=='user-not-found')
-                              print('The user has not been registered');
-                            else if(e.code=='wrong-password')
-                              print('enter correct password');
-                            else if(e.code=='invalid-email')
-                              print('Please enter a valid email address');
+                            if(e.code=='user-not-found') {
+                              developer.log('The user has not been registered');
+                            } else if(e.code=='wrong-password') {
+                              developer.log('enter correct password');
+                            } else if(e.code=='invalid-email') {
+                              developer.log('Please enter a valid email address');
+                            }
                           }
                           catch(e){ //catches every other type of error
-                            print(e);
-                            print(e.runtimeType);
+                            developer.log(e.toString());
+                            developer.log(e.runtimeType.toString());
                           }
 
                       },
@@ -84,7 +88,7 @@ class _LoginViewState extends State<LoginView> {
                     TextButton(
                         onPressed: (){
                           Navigator.of(context).pushNamedAndRemoveUntil(
-                                  '/register',
+                                  registerRoute,
                                   (route) => false);
                         },
                         child: const Text('Not registered yet? Register here!'),
