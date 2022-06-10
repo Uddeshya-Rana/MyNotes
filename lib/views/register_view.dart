@@ -1,9 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import '../firebase_options.dart';
-
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -37,16 +33,7 @@ class _RegisterViewState extends State<RegisterView> {
       appBar: AppBar(
         title: const Text('Register'),
       ),
-      body: FutureBuilder(  //it tells the core flutter engine to draw this column in future (bcz we want it to be rendered only when firebase has been initialized)
-        future: Firebase.initializeApp( //removed await bcz its auto implied inside future parameter of future builder
-          options: DefaultFirebaseOptions.currentPlatform,
-        ),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-
-          switch(snapshot.connectionState){
-          //Returns column in case the Future firebase object gets completed successfully
-            case ConnectionState.done:
-              return Column(
+      body: Column(
                 children: [
                   TextField(
                     controller: _email,
@@ -66,11 +53,7 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () async{//registration of firebase user is an asynchronous task i.e. it doesn't complete immediately
-
-                      /* await Firebase.initializeApp( //firebase must be initialized before other calls to firebase
-                        options: DefaultFirebaseOptions.currentPlatform,
-                        ); //it must not be initialized here, as its against widget binding principle (refer to notes)*/
+                    onPressed: () async{
 
                       final email=_email.text;
                       final password=_password.text;
@@ -97,16 +80,19 @@ class _RegisterViewState extends State<RegisterView> {
                     },
                     child: const Text('Register'),
                   ),
+                  TextButton(
+                      onPressed: (){
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/login',
+                          (route) => false
+                        );
+                      },
+                      child: const Text('Already registered? Login here!'),
+                  )
                 ],
-              );
-          //Returns text of loading in every other state
-            default:
-              return const Text('Loading....');
-          }
+              ),
 
-        }, //builder
 
-      ),
     );
   }
 }
