@@ -4,6 +4,8 @@ import 'dart:developer' as developer;
 
 import 'package:mynotes/constants/routes.dart';
 
+import '../utilities/show_error_dialog.dart';
+
 
 class LoginView extends StatefulWidget{
   const LoginView({Key? key}) : super(key: key);
@@ -70,16 +72,18 @@ class _LoginViewState extends State<LoginView> {
 
                              }on FirebaseAuthException catch(e){ //catches on the firebase auth type of exceptions
                             if(e.code=='user-not-found') {
-                              developer.log('The user has not been registered');
+                              await showErrorDialog(context, 'User not found!');
                             } else if(e.code=='wrong-password') {
-                              developer.log('enter correct password');
+                              await showErrorDialog(context, 'Enter correct password!');
                             } else if(e.code=='invalid-email') {
-                              developer.log('Please enter a valid email address');
+                              await showErrorDialog(context, 'Enter correct email!');
+                            }
+                            else{
+                              await showErrorDialog(context, 'Error: ${e.code}');
                             }
                           }
                           catch(e){ //catches every other type of error
-                            developer.log(e.toString());
-                            developer.log(e.runtimeType.toString());
+                            await showErrorDialog(context, e.toString());
                           }
 
                       },
@@ -101,3 +105,4 @@ class _LoginViewState extends State<LoginView> {
 
  
 }
+

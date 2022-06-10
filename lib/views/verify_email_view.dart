@@ -20,6 +20,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
       body: Column(
         children: [
           const Text('Please verify your email address:'),
+
           TextButton(
             onPressed: () async {
               try{
@@ -32,6 +33,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
             },
             child:  const Text('Send email Verification') ,
           ),
+
         ],
       ),
     );

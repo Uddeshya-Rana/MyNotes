@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
 import 'package:mynotes/constants/routes.dart';
+import 'package:mynotes/utilities/show_error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -65,19 +66,22 @@ class _RegisterViewState extends State<RegisterView> {
                             email: email,
                             password: password
                         );
-                        developer.log(userCredential.toString());
+
+                        showSuccessfulRegistrationDialog(context);
                       }on FirebaseAuthException catch(e){ //catches on the firebase auth type of exceptions
                         if(e.code=='weak-password') {
-                          developer.log('password is too short');
+                          showErrorDialog(context, 'Password is too short!');
                         } else if(e.code=='email-already-in-use') {
-                          developer.log('this email is already registered');
+                          showErrorDialog(context, 'This email is already in use!');
                         } else if(e.code=='invalid-email') {
-                          developer.log('Please enter a valid email address');
+                          showErrorDialog(context, 'Enter a valid email address!');
+                        }
+                        else{
+                          showErrorDialog(context, 'Error: ${e.code}');
                         }
                       }
                       catch(e){ //catches every other type of error
-                        developer.log(e.toString());
-                        developer.log(e.runtimeType.toString());
+                        showErrorDialog(context, e.toString());
                       }
 
 
@@ -86,7 +90,7 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                   TextButton(
                       onPressed: (){
-                        Navigator.of(context).pushNamedAndRemoveUntil(
+                        Navigator.of(context).pushNamedAndRemoveUntil( //Remove Until pushes a screen without the option of going back to previous one
                           loginRoute,
                           (route) => false
                         );
@@ -99,4 +103,26 @@ class _RegisterViewState extends State<RegisterView> {
 
     );
   }
+}
+
+
+Future<void> showSuccessfulRegistrationDialog(BuildContext context){
+  return showDialog<bool>(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          title: const Text('Success'),
+          content: const Text('Registration was successful! proceed to login'),
+          actions: [
+            TextButton(onPressed: (){
+              Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
+            },
+                child: const Text('OK')
+            ),
+
+          ],
+        );
+      }
+  );
+
 }
