@@ -1,5 +1,8 @@
 //Importing all the custom service classes
 
+import 'package:firebase_core/firebase_core.dart';
+
+import '../firebase_options.dart';
 import 'auth_exceptions.dart';
 import 'auth_provider.dart';
 import 'auth_user.dart';
@@ -9,6 +12,13 @@ import 'auth_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthProvider implements AuthProvider{
+
+  @override
+  Future<void> initialize() async{
+    Firebase.initializeApp( //removed await bcz its auto implied inside future parameter of future builder
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }//initialize
 
   @override
   //  currentUser getter
@@ -100,7 +110,7 @@ class FirebaseAuthProvider implements AuthProvider{
    else{
      throw UserNotLoggedInAuthException();
    }
-  } //logOut
+  }//logOut
 
   
 }

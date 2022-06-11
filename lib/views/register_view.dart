@@ -1,9 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as developer;
 
 import 'package:mynotes/constants/routes.dart';
+import 'package:mynotes/services/auth_service.dart';
 import 'package:mynotes/utilities/show_error_dialog.dart';
+
+import '../services/auth_exceptions.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -62,28 +63,21 @@ class _RegisterViewState extends State<RegisterView> {
                       final email=_email.text;
                       final password=_password.text;
                       try{
-                        UserCredential userCredential= await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                            email: email,
-                            password: password
-                        );
+                     await AuthService.firebase().createUser(
+                         email: email,
+                         password: password
+                     );
 
                         showSuccessfulRegistrationDialog(context);
-                      }on FirebaseAuthException catch(e){ //catches on the firebase auth type of exceptions
-                        if(e.code=='weak-password') {
-                          showErrorDialog(context, 'Password is too short!');
-                        } else if(e.code=='email-already-in-use') {
-                          showErrorDialog(context, 'This email is already in use!');
-                        } else if(e.code=='invalid-email') {
-                          showErrorDialog(context, 'Enter a valid email address!');
-                        }
-                        else{
-                          showErrorDialog(context, 'Error: ${e.code}');
-                        }
+                      }on EmailAlreadyInUseAuthException{
+                        await showErrorDialog(context, 'Email is already in use!');
+                      } on WeakPasswordAuthException {
+                        await showErrorDialog(context, 'Password is too short!');
+                      } on InvalidEmailAuthException {
+                        await showErrorDialog(context, 'Not a valid email!');
+                      } on GenericAuthException{
+                        await showErrorDialog(context, 'Authentication error!');
                       }
-                      catch(e){ //catches every other type of error
-                        showErrorDialog(context, e.toString());
-                      }
-
 
                     },
                     child: const Text('Register'),

@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as developer;
 
 import 'package:mynotes/constants/routes.dart';
+import 'package:mynotes/services/auth_exceptions.dart';
+import 'package:mynotes/services/auth_service.dart';
 
 import '../utilities/show_error_dialog.dart';
 
@@ -64,27 +64,23 @@ class _LoginViewState extends State<LoginView> {
                         final email=_email.text;
                         final password=_password.text;
                           try{
-                                UserCredential userCredential= await FirebaseAuth.instance.signInWithEmailAndPassword(
-                                    email: email,
-                                    password: password
-                                    );
+                            await AuthService.firebase().logIn(
+                                email: email,
+                                password: password
+                            );
+
                                 Navigator.of(context).pushNamedAndRemoveUntil(notesRoute, (route) => false);
 
-                             }on FirebaseAuthException catch(e){ //catches on the firebase auth type of exceptions
-                            if(e.code=='user-not-found') {
+                             }on UserNotFoundAuthException catch(e){ //catches on the firebase auth type of exceptions
                               await showErrorDialog(context, 'User not found!');
-                            } else if(e.code=='wrong-password') {
-                              await showErrorDialog(context, 'Enter correct password!');
-                            } else if(e.code=='invalid-email') {
-                              await showErrorDialog(context, 'Enter correct email!');
-                            }
-                            else{
-                              await showErrorDialog(context, 'Error: ${e.code}');
-                            }
+                            } on WrongPasswordAuthException {
+                              await showErrorDialog(context, 'Wrong password!');
+                            } on InvalidEmailAuthException {
+                              await showErrorDialog(context, 'Not a valid email!');
+                            } on GenericAuthException{
+                            await showErrorDialog(context, 'Authentication error!');
                           }
-                          catch(e){ //catches every other type of error
-                            await showErrorDialog(context, e.toString());
-                          }
+
 
                       },
                       child: const Text('Login'),
