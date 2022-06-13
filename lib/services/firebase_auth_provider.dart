@@ -25,7 +25,7 @@ class FirebaseAuthProvider implements AuthProvider{
   AuthUser? get currentUser{
     final User? u= FirebaseAuth.instance.currentUser;
     if(u!=null){
-      return AuthUser(u.uid); //returns and initialize AuthUser instance with uid string
+      return AuthUser(u.email!,userId: u.uid); //returns and initialize AuthUser instance with uid string
     }else{
       return null;
     }

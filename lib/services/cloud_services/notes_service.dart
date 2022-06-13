@@ -1,6 +1,6 @@
 //TODO- necessary imports
-import 'db_exceptions.dart';
-
+import 'cloud_exceptions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 //TODO- construct DB path
 
 
@@ -38,7 +38,9 @@ const isSyncedWithCloudColumn= 'is_synced_with_cloud';
 
 //TODO: Make a NotesService class to connect to the Database
 
+
 /*
+
 class NoteService {
 
  List<DatabaseNote> _notes = []; //creating a list stream
@@ -256,11 +258,12 @@ class NoteService {
 
 
   }
-//TODO- MAKE DataBaseUser class
 
 }
 
  */
+
+//TODO- MAKE DataBaseUser class
 
 class DatabaseUser {
   final int id;
