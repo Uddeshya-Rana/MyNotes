@@ -1,11 +1,36 @@
-//TODO- necessary imports
-import 'cloud_exceptions.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-//TODO- construct DB path
 
 
 
-//TODO- define constants with same field name/column name as those in database
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//****code for CRUD local storage
+/*
 
 //create the user table IF NOT EXIST
 
@@ -35,8 +60,6 @@ const emailColumn = 'email';
 const userIdColumn= 'user_id';
 const textColumn= 'text';
 const isSyncedWithCloudColumn= 'is_synced_with_cloud';
-
-//TODO: Make a NotesService class to connect to the Database
 
 
 /*
@@ -263,7 +286,6 @@ class NoteService {
 
  */
 
-//TODO- MAKE DataBaseUser class
 
 class DatabaseUser {
   final int id;
@@ -281,23 +303,19 @@ class DatabaseUser {
         id= map[idColumn] as int,
         email= map[emailColumn] as String;
 
-//TODO- override toString method to return a database query
 
   @override
   String toString() => 'Person, ID = $id, email = $email';
 
-  //TODO- do operator overloading of '==' operator using covariant which does not change the meaning of original operator
   @override
   bool operator ==(covariant DatabaseUser other) => id ==other.id;
 
   @override
-  // TODO: implement hashCode
   int get hashCode => id.hashCode;
 
 
 }
 
-//TODO: make a database Note class and map it similar to databaseUser class
 
 class DatabaseNote{
   final int id;
@@ -326,3 +344,4 @@ class DatabaseNote{
   @override
   int get hashCode => id.hashCode;
 }
+*/

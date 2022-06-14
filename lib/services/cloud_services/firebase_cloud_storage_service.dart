@@ -23,12 +23,18 @@ class FirebaseCloudStorageService {
       'notes'); //this returns a stream of notes
 
   //creating new notes
-  void createNote({required String ownerUserId}) async {
+  Future<CloudNote> createNewNote({required String ownerUserId}) async {
     //Adding new note to the stream of notes
-    notes.add({
+    final document= await notes.add({
       ownerUserIdFieldName: ownerUserId,
       textFieldName: '',
     });
+    final fetchedNote= await document.get(); //fetched note has the snapshot
+    return CloudNote(
+        documentId: fetchedNote.id,
+        ownerUserId: ownerUserId,
+        text: '',
+    );
   }
 
   //getting notes by ID
@@ -37,14 +43,8 @@ class FirebaseCloudStorageService {
       return await notes.where(
           ownerUserIdFieldName,
           isEqualTo: ownerUserId
-      ).get().then((value) =>
-          value.docs.map(
-                  (doc) =>
-                  CloudNote(
-                    documentId: doc.id,
-                    ownerUserId: doc.data()[ownerUserIdFieldName] as String,
-                    text: doc.data()[textFieldName] as String,
-                  )
+      ).get().then((value) => value.docs.map(
+            (doc) => CloudNote.fromSnapshot(doc)  //return cloud note with constructor
           ) //map
       ); //then
 
