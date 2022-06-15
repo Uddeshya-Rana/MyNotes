@@ -1,16 +1,16 @@
 
 import 'package:flutter/material.dart';
-import 'package:mynotes/extensions/buildcontext/loc.dart';
 import 'package:mynotes/utilities/dialogs/generic_dialog.dart';
 
 Future<void> showCannotShareEmptyNoteDialog(BuildContext context) {
-  return showGenericDialog<void>(
+return showGenericDialog(
     context: context,
-    title: context.loc.sharing,
-    content: context.loc.cannot_share_empty_note_prompt,
+    title: 'Sharing',
+    content: 'You cannot share an empty note!',
     optionsBuilder: () => {
-      context.loc.ok: null,
-    },
-  );
+      'OK' :null ,
+    }
+);
+
 }
 

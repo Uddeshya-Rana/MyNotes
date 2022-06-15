@@ -15,7 +15,7 @@ class FirebaseAuthProvider implements AuthProvider{
 
   @override
   Future<void> initialize() async{
-    Firebase.initializeApp( //removed await bcz its auto implied inside future parameter of future builder
+    await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }//initialize
